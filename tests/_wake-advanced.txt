@@ -1,0 +1,204 @@
+
+===== advanced =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+
+===== delivery =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+View in task only
+Deliver to IM
+Results stay in the task history. Choose Deliver to IM to send artifacts directly to selected conversations.
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+CLICK FAILED Deliver to IM: locator.click: Timeout 5000ms exceeded.
+
+===== delivery_im =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+View in task only
+Deliver to IM
+Results stay in the task history. Choose Deliver to IM to send artifacts directly to selected conversations.
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+CLICK FAILED View in task only: locator.click: Timeout 5000ms exceeded.
+
+===== execution =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+rizka
+Incomplete or needs attention
+Hand off to Waker
+Run WakerFlow
+Executor*
+rizka
+Change
+Execution prompt*
+This content is sent to the selected Waker as its prompt every time the automation is triggered.
+0/10000
+Auto
+Workspace
+Default Workspace
+Local Directory
+Project
+Result delivery
+View in task only
+Complete
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+POPUP model: ["Auto 0.3x","Ultimate 2x","Fast 0.6x","Efficient Free 0x 0.1x","Sonus 8x","Cantus 4x","Qwen4-Max New 0.4x","Qwen4-Max-Preview New 0.1x 0.5x","Qwen3.8-Max 0.5x","Qwen3.8-Flash 0.1x","Kimi-K3.1-Pro New 1x","Kimi-K2.8-Preview 0.8x","GLM-5.3 0.8x","GLM-5.3-Flash 0.1x","DeepSeek-V4-Pro 0.5x","DeepSeek-Flash 0.1x","MiniMax-M3.1-Flash 0.1x","Model settings"]
+CLICK FAILED Local Directory: locator.click: Timeout 5000ms exceeded.
+
+===== workspace_local =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+rizka
+Incomplete or needs attention
+Hand off to Waker
+Run WakerFlow
+Executor*
+rizka
+Change
+Execution prompt*
+This content is sent to the selected Waker as its prompt every time the automation is triggered.
+0/10000
+Auto
+Workspace
+Default Workspace
+Local Directory
+Project
+Result delivery
+View in task only
+Complete
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+
+===== execution_wakerflow =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Daily at 09:00
+Complete
+Task execution*
+Run WakerFlow
+Incomplete or needs attention
+Hand off to Waker
+Run WakerFlow
+Select WakerFlow*
+Select a WakerFlow
+Result delivery
+View in task only
+Complete
+Advanced settings
+Max runs
+Unlimited
+Custom
+The automation pauses automatically after reaching this limit.
+End date
+Never ends
+Specific date
+The automation will no longer trigger after this date.
+Cancel
+Save
+Close
+
+ELEMENTS: ["input|New automation|","button|Triggers|","tab|Schedule|","tab|Event|","tab|API|","radio||true","radio||false","combobox|Daily|","input|Date & time|09:00","button|Add trigger|","button|Task execution|","tab|Hand off to Waker|","tab|Run WakerFlow|","combobox|Select WakerFlow|","button|Result delivery|","button|Advanced settings|","tab|Unlimited|","tab|Custom|","tab|Never ends|","tab|Specific date|","button|Cancel|","button|Save|","button|Close|"]

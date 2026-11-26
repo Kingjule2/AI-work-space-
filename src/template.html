@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2ead8">
+  <meta name="description" content="JADIDULU Mansion — Pixel-art virtual office and live QoderWake chat control room.">
+  <title>JADIDULU — Pixel Mansion</title>
+  <style>
+    /* OFFICE_STYLES */
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <main class="map-stage" aria-label="Interactive pixel-art virtual office">
+      <canvas id="estate-canvas" tabindex="0"
+        aria-label="Pixel-art estate map. Drag to pan, scroll or press 1-4 to zoom in integer steps, 0 to reset."></canvas>
+      <div class="camera-controls" aria-label="Map zoom controls">
+        <button id="zoom-out" aria-label="Zoom out"><span class="icon" data-icon="minus"></span></button>
+        <button class="scale-btn active" data-scale="1" title="1x overview">1x</button>
+        <button class="scale-btn" data-scale="2" title="2x pixel scale">2x</button>
+        <button class="scale-btn" data-scale="3" title="3x pixel scale">3x</button>
+        <button class="scale-btn" data-scale="4" title="4x pixel scale">4x</button>
+        <span id="zoom-label" hidden>100%</span>
+        <button id="zoom-in" aria-label="Zoom in"><span class="icon" data-icon="plus"></span></button>
+        <span class="control-separator"></span>
+        <button id="reset-view" aria-label="Reset camera view" title="Reset view"><span class="icon"
+            data-icon="maximize"></span></button>
+      </div>
+      <button class="mobile-chat-fab" id="mobile-details" aria-label="Open Sahlu chat panel"><span class="icon"
+          data-icon="chat"></span><span>Chat Sahlu</span></button>
+    </main>
+
+    <aside class="details-panel" aria-label="Chat and workforce panel">
+      <header class="panel-header">
+        <a class="brand" href="#" aria-label="Reset JADIDULU mansion view">
+          <span class="brand-mark">J</span>
+          <span>JADIDULU<small id="connection-short">Live Office</small></span>
+        </a>
+        <div class="panel-tools">
+          <button class="icon-button" id="meeting-button" title="Mulai diskusi tim di Meeting Room"
+            aria-label="Start team discussion in Meeting Room"><span class="icon" data-icon="users"></span></button>
+          <button class="icon-button" id="connect-button" title="QoderWake Chrome Bridge"
+            aria-label="Open QoderWake bridge connection"><span class="icon" data-icon="plug"></span><i
+              class="status-pip" id="connection-dot"></i></button>
+          <button class="icon-button" id="resync-button" title="Resync live Wakers"
+            aria-label="Resync live Wakers from QoderWake"><span class="icon" data-icon="activity"></span></button>
+          <button class="icon-button" id="founder-button" title="Founder approvals"
+            aria-label="Open founder approvals"><span class="icon" data-icon="shield"></span><em class="pip-count"
+              id="approval-count" hidden>0</em></button>
+          <button class="icon-button" id="theme-toggle" title="Day / night" aria-label="Switch day or night theme"><span
+              class="icon" data-icon="moon"></span></button>
+          <button class="icon-button" id="motion-toggle" title="Reduce motion" aria-label="Toggle reduce motion"
+            aria-pressed="false"><span class="icon" data-icon="motion"></span></button>
+          <button class="icon-button mobile-only" id="close-details" aria-label="Close panel"><span class="icon"
+              data-icon="close"></span></button>
+        </div>
+      </header>
+
+      <nav class="panel-tabs" role="tablist" aria-label="Panel sections">
+        <button class="tab-btn active" data-panel-tab="chat" role="tab" aria-selected="true"><span class="icon"
+            data-icon="chat"></span>Chat</button>
+        <button class="tab-btn" data-panel-tab="team" role="tab" aria-selected="false"><span class="icon"
+            data-icon="users"></span>Team <small id="working-pill">0/11</small></button>
+        <button class="tab-btn" data-panel-tab="feed" role="tab" aria-selected="false"><span class="icon"
+            data-icon="activity"></span>Feed</button>
+        <button class="tab-btn" data-panel-tab="output" role="tab" aria-selected="false"><span class="icon"
+            data-icon="file"></span>Output <small id="output-count">0</small></button>
+      </nav>
+
+      <!-- TAB 1: DEDICATED CHAT PANEL (DEFAULT) -->
+      <section class="tab-pane active" id="pane-chat" data-pane="chat">
+        <div class="selected-strip" id="selected-strip">
+          <span class="strip-avatar" id="strip-avatar"></span>
+          <div class="strip-info">
+            <strong id="map-selected-name">sahlu</strong>
+            <small id="strip-role">Q&amp;A Specialist · Standby</small>
+          </div>
+          <div class="strip-actions">
+            <button class="mini-btn" id="map-follow" title="Follow Waker" aria-label="Follow selected Waker"
+              aria-pressed="false"><span class="icon" data-icon="location"></span></button>
+            <button class="mini-btn" id="map-pause" title="Pause in QoderWake ↗"
+              aria-label="Open Waker pause in QoderWake"><span class="icon" data-icon="pause"></span></button>
+            <button class="mini-btn" id="map-stop" title="Stop in QoderWake ↗"
+              aria-label="Open Waker stop in QoderWake"><span class="icon" data-icon="stop"></span></button>
+            <button class="mini-btn" id="map-task" title="Focus Sahlu chat" aria-label="Write a request to Sahlu"><span
+                class="icon" data-icon="chat"></span></button>
+          </div>
+        </div>
+
+        <section class="intake-chat" id="intake-chat" aria-labelledby="chat-title">
+          <div class="chat-head">
+            <h3 id="chat-title"><span class="icon" data-icon="chat"></span>Ask Intake</h3>
+            <span class="chat-route"
+              title="Intake → Product/Backend/Plan → Project Pack → Estimate → Approval → Delivery → QA → Approval → DevOps">Brief
+              → Pack → Delivery</span>
+            <button class="icon-button" id="chat-size" type="button" aria-label="Expand conversation"
+              aria-expanded="false"><span class="icon" data-icon="expand"></span></button>
+          </div>
+          <div class="chat-thread" id="chat-thread" role="log" aria-label="Conversation with your team" tabindex="0">
+          </div>
+          <div class="run-banner" id="chat-run-banner" hidden></div>
+          <form id="chat-form">
+            <div class="project-context">
+              <label for="project-id">Project</label>
+              <input id="project-id" name="project_id" list="project-suggestions" maxlength="60"
+                placeholder="Nama project (cth: Testing)" autocomplete="off" spellcheck="false" required
+                title="Ketik nama project baru (otomatis jadi P-NAMA) atau pilih project yang ada.">
+              <button class="mini-pill primary" id="project-create-btn" type="button"
+                title="Buat project &amp; grup Waker baru di QoderWake">+ Buat</button>
+              <datalist id="project-suggestions"></datalist>
+            </div>
+            <div class="chat-route-bar" id="chat-route-bar" hidden>
+              <select id="chat-target" aria-label="Target Waker" title="Pilih Waker tujuan (default: Intake)">
+                <option value="">To: Intake (default)</option>
+              </select>
+              <button class="mini-pill" id="founder-approve-btn" type="button" hidden
+                title="Persetujuan Founder (Gate 1) agar PLAN langsung lanjut ke Design & Build">✓ Approve
+                Build</button>
+              <a class="mini-pill accent" id="quick-preview-link" href="#" target="_blank" rel="noopener noreferrer"
+                hidden>Preview ↗</a>
+            </div>
+            <label class="sr-only" for="chat-input">Request for the intake Waker</label>
+            <textarea id="chat-input" maxlength="4000" rows="3"
+              placeholder="Tulis brief atau tugas untuk Waker intake… (Shift+Enter untuk baris baru)"></textarea>
+            <div class="chat-foot">
+              <span id="chat-state" role="status">Connecting to QoderWake…</span>
+              <button class="button outlined" id="chat-retry" type="button" hidden>Retry</button>
+              <button class="button primary" id="chat-send" type="submit"><span class="icon"
+                  data-icon="arrow"></span>Send</button>
+            </div>
+          </form>
+        </section>
+      </section>
+
+      <!-- TAB 2: TEAM DIRECTORY & SELECTED WAKER DETAILS -->
+      <section class="tab-pane" id="pane-team" data-pane="team" hidden>
+        <div class="team-pane-inner">
+          <label class="search-box">
+            <span class="icon" data-icon="search"></span>
+            <input id="waker-search" type="search" placeholder="Find Waker, role or room..."
+              aria-label="Search Wakers by name, role or team">
+            <kbd>/</kbd>
+          </label>
+          <div class="team-directory" id="team-directory"></div>
+          <button class="button outlined" id="planned-toggle" type="button" aria-expanded="false" hidden>Planned, not created yet (0)</button>
+          <div class="planned-list" id="planned-list" hidden></div>
+          <div id="waker-details"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: LIVE ACTIVITY & AUDIT FEED -->
+      <section class="tab-pane" id="pane-feed" data-pane="feed" hidden>
+        <div class="feed-pane-head">
+          <div class="feed-tabs" role="group" aria-label="Activity filter">
+            <button class="active" data-feed="all">All</button>
+            <button data-feed="approval">Approvals</button>
+            <button data-feed="command">Audit</button>
+          </div>
+          <a class="wake-link"
+            href="http://127.0.0.1:19820/work-management?machineId=b53ef4bd-28e2-44ee-8d53-483b4e9b3e1a" target="_blank"
+            rel="noopener noreferrer">QoderWake ↗</a>
+        </div>
+        <div class="activity-list" id="activity-list"></div>
+      </section>
+
+      <!-- TAB 4: PROJECT OUTPUT FILES & LIVE PREVIEW -->
+      <section class="tab-pane" id="pane-output" data-pane="output" hidden>
+        <div class="output-pane-inner">
+          <div class="output-head">
+            <div class="output-meta">
+              <strong id="output-project-label">No Project Selected</strong>
+              <small id="output-folder-path">Masukkan Project ID di tab Chat untuk melihat hasil file.</small>
+            </div>
+            <button class="button outlined" id="output-refresh" type="button">Refresh</button>
+          </div>
+          <div class="output-preview-bar" id="output-preview-bar" hidden>
+            <a class="button primary" id="output-preview-btn" href="#" target="_blank" rel="noopener noreferrer"><span
+                class="icon" data-icon="external"></span>Open Live Website ↗</a>
+          </div>
+          <div class="output-file-list" id="output-file-list">
+            <div class="empty-state">Belum ada file output di folder proyek ini.</div>
+          </div>
+        </div>
+      </section>
+
+      <div id="live-announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+    </aside>
+  </div>
+
+  <dialog id="office-dialog">
+    <div class="dialog-heading">
+      <div><span class="eyebrow" id="dialog-eyebrow">FOUNDER'S DESK</span>
+        <h2 id="dialog-title">Approval inbox</h2>
+      </div>
+      <button class="icon-button" id="dialog-close" aria-label="Close dialog"><span class="icon"
+          data-icon="close"></span></button>
+    </div>
+    <div id="dialog-content"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script type="module">/* OFFICE_SCRIPT */</script>
+</body>
+
+</html>

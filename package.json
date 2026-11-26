@@ -1,0 +1,20 @@
+{
+  "name": "jadidulu-waker-estate",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node build.mjs && node server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser-check.mjs",
+    "test:bridge": "node tests/bridge-check.mjs",
+    "test:chat": "node tests/chat-check.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
+  }
+}

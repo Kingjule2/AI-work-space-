@@ -1,0 +1,67 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+import { sanitizeSnapshot } from '../server.mjs';
+
+const origin = 'http://127.0.0.1:19821';
+const config = await (await fetch(`${origin}/api/config`)).json();
+const post = body => fetch(`${origin}/api/bridge`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Office-Key': config.pairingCode }, body: JSON.stringify(body) });
+const invalid = await fetch(`${origin}/api/bridge`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Office-Key': '0'.repeat(48) }, body: '{}' });
+assert.equal(invalid.status, 401);
+const crossSite = await fetch(`${origin}/api/config`, { headers: { Origin: 'https://untrusted.example', 'Sec-Fetch-Site': 'cross-site' } });
+assert.equal(crossSite.status, 403);
+console.log('PASS local server rejects invalid pairing codes and cross-site configuration access');
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+let deliveredSnapshot = null;
+try {
+  const context = await browser.newContext();
+  const wake = await context.newPage();
+  await wake.goto('http://127.0.0.1:19820/work-management?machineId=b53ef4bd-28e2-44ee-8d53-483b4e9b3e1a');
+  await wake.getByRole('heading', { name: 'Current tasks' }).waitFor({ timeout: 30000 });
+  await wake.exposeFunction('__deliverOfficeSnapshot', async message => {
+    if (message.error) throw new Error(message.error);
+    deliveredSnapshot = sanitizeSnapshot(message.snapshot);
+    const response = await post(deliveredSnapshot);
+    assert.equal(response.status, 200);
+    return { accepted: true };
+  });
+  await wake.evaluate(() => {
+    window.chrome = window.chrome || {};
+    window.chrome.storage = { local: { get: async () => ({ enabled: true }) }, onChanged: { addListener() {} } };
+    window.chrome.runtime = { sendMessage: message => window.__deliverOfficeSnapshot(message), onMessage: { addListener() {} } };
+  });
+  await wake.addScriptTag({ path: fileURLToPath(new URL('../extension/content.js', import.meta.url)) });
+  const office = await context.newPage({ viewport: { width: 1440, height: 960 } });
+  await office.goto(origin);
+  await office.waitForFunction(() => document.querySelector('#connection-short').textContent.startsWith('Live'), null, { timeout: 30000 });
+  assert.ok(deliveredSnapshot.agents.length > 0);
+  assert.ok(deliveredSnapshot.agents.every(agent => Object.keys(agent).length === 2));
+  console.log(`PASS real QoderWake content-script read: ${deliveredSnapshot.agents.length} Wakers, ${deliveredSnapshot.tasks.length} tasks; no credentials forwarded`);
+  const roster = await (await fetch(`${origin}/api/roster?resync=1`)).json();
+  assert.equal(await office.locator('#connection-short').innerText(), `Live · ${roster.count}/${roster.count} synced`);
+  assert.equal(await office.locator('#run-demo').count(), 0);
+  await office.fill('#project-id', 'P-BRIDGE');
+  await office.locator('#project-id').press('Tab');
+  await office.waitForFunction(() => document.querySelector('#chat-state').textContent.includes('JADIDULU Office'), null, { timeout: 60000 });
+  const chat = await (await fetch(`${origin}/api/chat?project_id=P-BRIDGE`, { headers: { 'X-Office-Key': config.pairingCode } })).json();
+  assert.equal(chat.available, true);
+  assert.equal(chat.intake.roleKey, 'intake');
+  assert.match(await office.locator('.chat-route').getAttribute('title'), /Intake.*Product.*Estimate/);
+  assert.equal(await office.locator('#chat-send').isDisabled(), false);
+  console.log('PASS the office resolves the real intake role through QoderWake; this check sends nothing');
+  const selected = deliveredSnapshot.agents[0];
+  await office.click('[data-panel-tab="team"]');
+  await office.fill('#waker-search', selected.name);
+  await office.click(`[data-waker="${selected.id}"]`);
+  await office.click('[data-panel-tab="chat"]');
+  await office.click('#map-pause');
+  assert.match(await office.locator('#dialog-eyebrow').innerText(), /NO COMMAND SENT/);
+  assert.match(await office.locator('#dialog-content a').getAttribute('href'), /^http:\/\/127.0.0.1:19820\/conversations\//);
+  console.log('PASS live controls hand off to QoderWake without sending commands');
+  await office.click('#dialog-close');
+  await office.screenshot({ path: fileURLToPath(new URL('./live.png', import.meta.url)) });
+  await wake.close();
+  await post({ disconnected: true });
+  await office.waitForFunction(() => document.querySelector('.status-chip')?.textContent.includes('Stale'), null, { timeout: 10000 });
+  console.log('PASS disconnected bridge marks task status stale without deleting live Wakers');
+} finally { await post({ disconnected: true }); await browser.close(); }

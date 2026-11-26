@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "JADIDULU Bridge",
+  "version": "1.0.0",
+  "description": "Read-only local bridge from your logged-in QoderWake tab to the JADIDULU estate. No task commands or credentials are transmitted.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://127.0.0.1:19821/*", "http://127.0.0.1:19820/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "JADIDULU Bridge" },
+  "content_scripts": [{ "matches": ["http://127.0.0.1:19820/*"], "js": ["content.js"], "run_at": "document_idle" }]
+}

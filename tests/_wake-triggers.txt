@@ -1,0 +1,246 @@
+POPUP Repeats: ["Hourly","Daily","Weekly","Monthly","Custom"]
+
+===== repeat_Hourly =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Every hour at minute 0
+Complete
+Trigger 1
+Schedule
+Event
+API
+Schedule type
+Repeats
+One-time
+Repeats
+Hourly
+00
+Next run: 2026-11-19 18:00
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+
+===== repeat_Weekly =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Every Mon at 09:00
+Complete
+Trigger 1
+Schedule
+Event
+API
+Schedule type
+Repeats
+One-time
+Repeats
+Weekly
+Monday
+Next run: 2026-11-23 09:00
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+
+===== repeat_Custom =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+At 09:00, only on Monday
+Complete
+Trigger 1
+Schedule
+Event
+API
+Schedule type
+Repeats
+One-time
+Repeats
+Custom
+Cron expression
+Visual
+Expression
+Minute
+Hour
+Day
+Month
+Weekday
+At 09:00, only on Monday
+Next run: 2026-11-23 09:00
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+CLICK FAILED one-time: locator.click: Timeout 5000ms exceeded.
+
+===== schedule_one_time =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+At 09:00, only on Monday
+Complete
+Trigger 1
+Schedule
+Event
+API
+Schedule type
+Repeats
+One-time
+Repeats
+Custom
+Cron expression
+Visual
+Expression
+Minute
+Hour
+Day
+Month
+Weekday
+At 09:00, only on Monday
+Next run: 2026-11-23 09:00
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+
+===== trigger_event =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+Event
+Incomplete or needs attention
+Trigger 1
+Schedule
+Event
+API
+Event source
+GitHub
+GitHub repository
+Watch content
+Issue
+Opened
+Edited
+Pull Request
+Opened
+Edited
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+POPUP event combobox 0: ["GitHub"]
+
+===== trigger_api =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+API
+Complete
+Trigger 1
+Schedule
+Event
+API
+Save to view the invocation URL.
+Add trigger
+1/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+
+===== second_trigger =====
+New Automation
+Configure the automation name, triggers, task execution, result delivery, and advanced settings.
+Name*
+Task configuration
+Triggers*
+API · Daily at 09:00
+Complete
+Trigger 1
+Schedule
+Event
+API
+Save to view the invocation URL.
+Trigger 2
+Schedule
+Event
+API
+Schedule type
+Repeats
+One-time
+Repeats
+Daily
+Next run: 2026-11-20 09:00
+Add trigger
+2/5
+Task execution*
+rizka
+Incomplete or needs attention
+Result delivery
+View in task only
+Complete
+Advanced settings
+Cancel
+Save
+Close
+
+ELEMENTS: ["input|New automation|","button|Triggers|","button|Remove trigger|","tab|Schedule|","tab|Event|","tab|API|","button|Remove trigger|","tab|Schedule|","tab|Event|","tab|API|","radio||true","radio||false","combobox|Daily|","input|Date & time|09:00","button|Add trigger|","button|Task execution|","tab|Hand off to Waker|","tab|Run WakerFlow|","button|Change|","textarea|Execution prompt|","button|Auto|","radio||true","radio||false","radio||false","button|Result delivery|","radio||true","radio||false","button|Advanced settings|","button|Cancel|","button|Save|","button|Close|"]
